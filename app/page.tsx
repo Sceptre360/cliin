@@ -34,7 +34,7 @@ export default async function Home() {
   return (
     <div className="font-sans min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-background shadow-sm fixed w-full top-0 z-10">
+      <header className="bg-background shadow-md fixed w-full top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <Link href="/" className="flex items-center">
@@ -45,7 +45,7 @@ export default async function Home() {
                 height={40}
                 priority
               />
-              <h1 className="text-2xl font-bold text-foreground ml-2">Kliin Fashions</h1>
+              <h1 className="text-2xl font-bold text-primary-pink ml-2">Kliin Fashions</h1>
             </Link>
             <nav className="hidden md:flex space-x-4">
               {categories.map((category) => (
@@ -60,12 +60,12 @@ export default async function Home() {
             </nav>
             <div className="flex items-center space-x-4">
               <button className="md:hidden">
-                <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-primary-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
               <button className="relative">
-                <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-primary-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 <span className="absolute -top-2 -right-2 bg-primary-pink text-background text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
@@ -76,7 +76,7 @@ export default async function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="pt-20 pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="pt-24 sm:pt-28 pb-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <section className="mb-12">
           <div className="relative h-64 sm:h-96 rounded-lg overflow-hidden">
@@ -87,7 +87,7 @@ export default async function Home() {
               objectFit="cover"
               priority
             />
-            <div className="absolute inset-0 bg-foreground bg-opacity-40 flex items-center justify-center">
+            <div className="absolute inset-0 bg-primary-pink bg-opacity-40 flex items-center justify-center">
               <div className="text-center text-background">
                 <h2 className="text-3xl sm:text-4xl font-bold mb-4">Discover Your Style</h2>
                 <Link href="#shop" className="button">
@@ -126,13 +126,13 @@ export default async function Home() {
         <section id="shop" className="mb-12">
           <h2 className="text-2xl font-bold mb-6 text-center sm:text-left text-foreground">Featured Products</h2>
           {error ? (
-            <div className="text-center text-red-600">{error}</div>
+            <div className="text-center text-primary-pink">{error}</div>
           ) : products.length === 0 ? (
             <div className="text-center text-foreground">No products available.</div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
               {products.map((product) => (
-                <div key={product.id} className="bg-background rounded-lg shadow-sm overflow-hidden">
+                <div key={product.id} className="product-card">
                   <div className="relative h-64">
                     <Image
                       src={product.image}
