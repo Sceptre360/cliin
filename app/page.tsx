@@ -1,53 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  category: string;
+  image: string;
+}
 
 export default function Home() {
-  // Sample product data
-  const categories = ["Men", "Women", "Kids", "Accessories"];
-  const products = [
-    {
-      id: 1,
-      name: "Classic White Shirt",
-      price: 49.99,
-      category: "Men",
-      image: "/images/white-shirt.jpg",
-    },
-    {
-      id: 2,
-      name: "Summer Floral Dress",
-      price: 79.99,
-      category: "Women",
-      image: "/images/floral-dress.jpg",
-    },
-    {
-      id: 3,
-      name: "Kids Denim Jacket",
-      price: 39.99,
-      category: "Kids",
-      image: "/images/denim-jacket.jpg",
-    },
-    {
-      id: 4,
-      name: "Leather Handbag",
-      price: 99.99,
-      category: "Accessories",
-      image: "/images/handbag.jpg",
-    },
-    {
-      id: 5,
-      name: "Men's Casual Sneakers",
-      price: 69.99,
-      category: "Men",
-      image: "/images/sneakers.jpg",
-    },
-    {
-      id: 6,
-      name: "Silk Scarf",
-      price: 29.99,
-      category: "Accessories",
-      image: "/images/scarf.jpg",
-    },
-  ];
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Categories based on Fake Store API
+  const categories = ["Men's Clothing", "Women's Clothing", "Jewelery", "Electronics"];
+
+  // Fetch products from Fake Store API
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const response = await fetch("https://fakestoreapi.com/products");
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+        const data = await response.json();
+        setProducts(data);
+        setLoading(false);
+      } catch (err) {
+        setError("Error fetching products. Please try again later.");
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
 
   return (
     <div className="font-sans min-h-screen bg-gray-50">
@@ -69,7 +57,7 @@ export default function Home() {
               {categories.map((category) => (
                 <Link
                   key={category}
-                  href={`#${category.toLowerCase()}`}
+                  href={`#${category.toLowerCase().replace(" ", "-")}`}
                   className="text-gray-600 hover:text-gray-900"
                 >
                   {category}
@@ -126,11 +114,11 @@ export default function Home() {
             {categories.map((category) => (
               <Link
                 key={category}
-                href={`#${category.toLowerCase()}`}
+                href={`#${category.toLowerCase().replace(" ", "-")}`}
                 className="relative h-40 rounded-lg overflow-hidden group"
               >
                 <Image
-                  src={`/images/${category.toLowerCase()}-category.jpg`} // Replace with category images
+                  src={`/images/${category.toLowerCase().replace(" ", "-")}-category.jpg`} // Replace with category images
                   alt={category}
                   layout="fill"
                   objectFit="cover"
@@ -146,28 +134,36 @@ export default function Home() {
         {/* Products */}
         <section id="shop" className="mb-12">
           <h2 className="text-2xl font-bold mb-6 text-center sm:text-left">Featured Products</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-            {products.map((product) => (
-              <div key={product.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
-                <div className="relative h-64">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    layout="fill"
-                    objectFit="cover"
-                  />
+          {loading ? (
+            <div className="text-center text-gray-600">Loading products...</div>
+          ) : error ? (
+            <div className="text-center text-red-600">{error}</div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+              {products.map((product) => (
+                <div key={product.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
+                  <div className="relative h-64">
+                    <Image
+                      src={product.image}
+                      alt={product.title}
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold">{product.title}</h3>
+                    <p className="text-gray-600 text-sm capitalize">{product.category}</p>
+                    <p className="text-gray-900 font-medium mt-2 font-geist-mono">
+                      ${product.price.toFixed(2)}
+                    </p>
+                    <button className="mt-4 w-full bg-gray-900 text-white py-2 rounded-md hover:bg-gray-800">
+                      Add to Cart
+                    </button>
+                  </div>
                 </div>
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold">{product.name}</h3>
-                  <p className="text-gray-600 text-sm">{product.category}</p>
-                  <p className="text-gray-900 font-medium mt-2">${product.price.toFixed(2)}</p>
-                  <button className="mt-4 w-full bg-gray-900 text-white py-2 rounded-md hover:bg-gray-800">
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </section>
       </main>
 
@@ -184,7 +180,10 @@ export default function Home() {
               <ul className="space-y-2">
                 {categories.map((category) => (
                   <li key={category}>
-                    <Link href={`#${category.toLowerCase()}`} className="text-gray-400 hover:text-white">
+                    <Link
+                      href={`#${category.toLowerCase().replace(" ", "-")}`}
+                      className="text-gray-400 hover:text-white"
+                    >
                       {category}
                     </Link>
                   </li>
