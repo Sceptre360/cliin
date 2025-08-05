@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 interface Product {
   id: number;
@@ -10,32 +9,28 @@ interface Product {
   image: string;
 }
 
-export default function Home() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+async function fetchProducts() {
+  const response = await fetch("https://fakestoreapi.com/products", {
+    cache: "force-cache", // Cache for static generation, adjust as needed
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch products");
+  }
+  return response.json();
+}
+
+export default async function Home() {
+  let products: Product[] = [];
+  let error: string | null = null;
+
+  try {
+    products = await fetchProducts();
+  } catch (err) {
+    error = "Error fetching products. Please try again later.";
+  }
 
   // Categories based on Fake Store API
   const categories = ["Men's Clothing", "Women's Clothing", "Jewelery", "Electronics"];
-
-  // Fetch products from Fake Store API
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        const data = await response.json();
-        setProducts(data);
-        setLoading(false);
-      } catch (err) {
-        setError("Error fetching products. Please try again later.");
-        setLoading(false);
-      }
-    }
-    fetchProducts();
-  }, []);
 
   return (
     <div className="font-sans min-h-screen bg-gray-50">
@@ -134,10 +129,10 @@ export default function Home() {
         {/* Products */}
         <section id="shop" className="mb-12">
           <h2 className="text-2xl font-bold mb-6 text-center sm:text-left">Featured Products</h2>
-          {loading ? (
-            <div className="text-center text-gray-600">Loading products...</div>
-          ) : error ? (
+          {error ? (
             <div className="text-center text-red-600">{error}</div>
+          ) : products.length === 0 ? (
+            <div className="text-center text-gray-600">No products available.</div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
               {products.map((product) => (
