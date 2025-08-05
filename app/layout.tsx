@@ -21,11 +21,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Kliin Fashions - Your Style Destination",
     description: "Explore our curated collection of fashionable clothing and accessories.",
-    url: "https://www.kliinfashions.com", // Replace with your actual domain
+    url: "https://www.kliinfashions.com",
     siteName: "Kliin Fashions",
     images: [
       {
-        url: "/images/og-image.jpg", // Replace with your Open Graph image
+        url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Kliin Fashions Collection",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Kliin Fashions",
     description: "Shop the latest in fashion at Kliin Fashions.",
-    images: ["/images/twitter-image.jpg"], // Replace with your Twitter image
+    images: ["/images/twitter-image.jpg"],
   },
 };
 
@@ -50,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" /> {/* Add favicon */}
+        <link rel="icon" href="/favicon.ico" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased`}
