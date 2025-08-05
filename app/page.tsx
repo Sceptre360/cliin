@@ -11,7 +11,7 @@ interface Product {
 
 async function fetchProducts() {
   const response = await fetch("https://fakestoreapi.com/products", {
-    cache: "force-cache", // Cache for static generation, adjust as needed
+    cache: "force-cache",
   });
   if (!response.ok) {
     throw new Error("Failed to fetch products");
@@ -29,13 +29,12 @@ export default async function Home() {
     error = "Error fetching products. Please try again later.";
   }
 
-  // Categories based on Fake Store API
   const categories = ["Men's Clothing", "Women's Clothing", "Jewelery", "Electronics"];
 
   return (
-    <div className="font-sans min-h-screen bg-gray-50">
+    <div className="font-sans min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white shadow-sm fixed w-full top-0 z-10">
+      <header className="bg-background shadow-sm fixed w-full top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <Link href="/" className="flex items-center">
@@ -46,14 +45,14 @@ export default async function Home() {
                 height={40}
                 priority
               />
-              <h1 className="text-2xl font-bold text-gray-900 ml-2">Kliin Fashions</h1>
+              <h1 className="text-2xl font-bold text-foreground ml-2">Kliin Fashions</h1>
             </Link>
             <nav className="hidden md:flex space-x-4">
               {categories.map((category) => (
                 <Link
                   key={category}
                   href={`#${category.toLowerCase().replace(" ", "-")}`}
-                  className="text-gray-600 hover:text-gray-900"
+                  className="text-foreground hover:text-primary-pink"
                 >
                   {category}
                 </Link>
@@ -61,15 +60,15 @@ export default async function Home() {
             </nav>
             <div className="flex items-center space-x-4">
               <button className="md:hidden">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
               <button className="relative">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                <span className="absolute -top-2 -right-2 bg-primary-pink text-background text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
               </button>
             </div>
           </div>
@@ -88,13 +87,10 @@ export default async function Home() {
               objectFit="cover"
               priority
             />
-            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-              <div className="text-center text-white">
+            <div className="absolute inset-0 bg-foreground bg-opacity-40 flex items-center justify-center">
+              <div className="text-center text-background">
                 <h2 className="text-3xl sm:text-4xl font-bold mb-4">Discover Your Style</h2>
-                <Link
-                  href="#shop"
-                  className="bg-white text-gray-900 px-6 py-3 rounded-full font-medium hover:bg-gray-100"
-                >
+                <Link href="#shop" className="button">
                   Shop Now
                 </Link>
               </div>
@@ -104,13 +100,13 @@ export default async function Home() {
 
         {/* Categories */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-center sm:text-left">Shop by Category</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center sm:text-left text-foreground">Shop by Category</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {categories.map((category) => (
               <Link
                 key={category}
                 href={`#${category.toLowerCase().replace(" ", "-")}`}
-                className="relative h-40 rounded-lg overflow-hidden group"
+                className="relative h-40 rounded-lg overflow-hidden group category-card"
               >
                 <Image
                   src={`/images/${category.toLowerCase().replace(" ", "-")}-category.jpg`} // Replace with category images
@@ -118,8 +114,8 @@ export default async function Home() {
                   layout="fill"
                   objectFit="cover"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center group-hover:bg-opacity-30 transition-all">
-                  <span className="text-white text-lg font-semibold">{category}</span>
+                <div className="overlay absolute inset-0 flex items-center justify-center">
+                  <span className="text-background text-lg font-semibold">{category}</span>
                 </div>
               </Link>
             ))}
@@ -128,15 +124,15 @@ export default async function Home() {
 
         {/* Products */}
         <section id="shop" className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-center sm:text-left">Featured Products</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center sm:text-left text-foreground">Featured Products</h2>
           {error ? (
             <div className="text-center text-red-600">{error}</div>
           ) : products.length === 0 ? (
-            <div className="text-center text-gray-600">No products available.</div>
+            <div className="text-center text-foreground">No products available.</div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
               {products.map((product) => (
-                <div key={product.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div key={product.id} className="bg-background rounded-lg shadow-sm overflow-hidden">
                   <div className="relative h-64">
                     <Image
                       src={product.image}
@@ -146,14 +142,10 @@ export default async function Home() {
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="text-lg font-semibold">{product.title}</h3>
-                    <p className="text-gray-600 text-sm capitalize">{product.category}</p>
-                    <p className="text-gray-900 font-medium mt-2 font-geist-mono">
-                      ${product.price.toFixed(2)}
-                    </p>
-                    <button className="mt-4 w-full bg-gray-900 text-white py-2 rounded-md hover:bg-gray-800">
-                      Add to Cart
-                    </button>
+                    <h3 className="product-name">{product.title}</h3>
+                    <p className="text-accent-gray text-sm capitalize">{product.category}</p>
+                    <p className="product-price">${product.price.toFixed(2)}</p>
+                    <button className="mt-4 w-full button">Add to Cart</button>
                   </div>
                 </div>
               ))}
@@ -163,12 +155,12 @@ export default async function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8">
+      <footer className="bg-foreground text-background py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             <div>
               <h3 className="text-lg font-semibold mb-4">Kliin Fashions</h3>
-              <p className="text-gray-400">Discover the latest trends in fashion with Kliin Fashions.</p>
+              <p className="text-accent-gray">Discover the latest trends in fashion with Kliin Fashions.</p>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
@@ -177,7 +169,7 @@ export default async function Home() {
                   <li key={category}>
                     <Link
                       href={`#${category.toLowerCase().replace(" ", "-")}`}
-                      className="text-gray-400 hover:text-white"
+                      className="text-accent-gray hover:text-primary-pink"
                     >
                       {category}
                     </Link>
@@ -187,11 +179,11 @@ export default async function Home() {
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4">Contact</h3>
-              <p className="text-gray-400">Email: support@kliinfashions.com</p>
-              <p className="text-gray-400">Phone: (555) 123-4567</p>
+              <p className="text-accent-gray">Email: support@kliinfashions.com</p>
+              <p className="text-accent-gray">Phone: (555) 123-4567</p>
             </div>
           </div>
-          <div className="mt-8 text-center text-gray-400">
+          <div className="mt-8 text-center text-accent-gray">
             &copy; {new Date().getFullYear()} Kliin Fashions. All rights reserved.
           </div>
         </div>
