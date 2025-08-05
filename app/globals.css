@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #ffffff; /* Pure white for main background */
+  --foreground: #1f2937; /* Dark gray for text, matching existing gray-900 */
+  --primary-pink: #ff69b4; /* Hot pink for product names, prices, and accents */
+  --light-pink: #ffb6c1; /* Lighter pink for hover effects */
+  --accent-gray: #e5e7eb; /* Light gray for subtle accents, matching gray-200 */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 @theme inline {
@@ -14,13 +19,47 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0a0a0a; /* Dark background for dark mode */
+    --foreground: #ededed; /* Light text for dark mode */
+    --primary-pink: #ff69b4; /* Keep pink consistent in dark mode */
+    --light-pink: #ffb6c1;
+    --accent-gray: #4b5563; /* Darker gray for dark mode accents */
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans); /* Use Geist Sans instead of Arial */
+  @apply min-h-screen antialiased;
+}
+
+/* Product name styling */
+.product-name {
+  @apply text-lg font-semibold text-primary-pink hover:text-light-pink transition-colors;
+}
+
+/* Product price styling */
+.product-price {
+  @apply text-base font-mono font-medium text-primary-pink;
+}
+
+/* Button styling for consistency */
+button, a.button {
+  @apply bg-primary-pink text-background py-2 px-4 rounded-md hover:bg-light-pink hover:text-foreground transition-colors;
+}
+
+/* Header styling */
+header {
+  @apply bg-background shadow-md;
+}
+
+/* Footer styling */
+footer {
+  @apply bg-foreground text-background;
+}
+
+/* Category card hover effect */
+.category-card .overlay {
+  @apply bg-primary-pink bg-opacity-40 hover:bg-opacity-30 transition-all;
 }
