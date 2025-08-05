@@ -5,22 +5,22 @@ import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"], // Added weights for flexibility
+  weight: ["300", "400", "500", "700"],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: ["400", "500"], // Limited weights for mono font
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
   title: "Kliin Fashions - Trendy Clothing & Accessories",
-  description: "Discover the latest fashion trends with Kliin Fashions. Shop stylish clothing and accessories for men, women, kids, and more.",
+  description: "Shop the latest fashion trends at Kliin Fashions. Discover stylish clothing and accessories for men, women, and more.",
   keywords: ["fashion", "clothing", "e-commerce", "Kliin Fashions", "trendy outfits"],
   openGraph: {
     title: "Kliin Fashions - Your Style Destination",
-    description: "Explore our curated collection of fashionable clothing and accessories at Kliin Fashions.",
+    description: "Explore our curated collection of fashionable clothing and accessories.",
     url: "https://www.kliinfashions.com", // Replace with your actual domain
     siteName: "Kliin Fashions",
     images: [
@@ -53,7 +53,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" /> {/* Add favicon */}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased`}
       >
         {children}
       </body>
