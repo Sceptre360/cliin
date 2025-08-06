@@ -1,0 +1,43 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+# Path to shared storage
+SHARED_PATH="$HOME/storage/shared"
+
+# Folder to move (edit this if you're moving something else)
+SOURCE_FOLDER="cliin"
+
+# Check if source folder exists
+if [ ! -d "$SOURCE_FOLDER" ]; then
+  echo "❌ Folder '$SOURCE_FOLDER' not found in current directory."
+  exit 1
+fi
+
+# List folders in shared storage
+echo "📂 Folders in internal storage:"
+folders=()
+i=1
+for dir in "$SHARED_PATH"/*/; do
+  folder_name=$(basename "$dir")
+  echo "$i) $folder_name"
+  folders+=("$folder_name")
+  ((i++))
+done
+
+# Prompt user to choose
+echo ""
+read -p "Enter number of the folder to move '$SOURCE_FOLDER' into: " choice
+
+# Validate choice
+if [[ "$choice" -lt 1 || "$choice" -gt "${#folders[@]}" ]]; then
+  echo "❌ Invalid choice."
+  exit 1
+fi
+
+target="${folders[$((choice - 1))]}"
+destination="$SHARED_PATH/$target"
+
+# Move folder
+mv "$SOURCE_FOLDER" "$destination"
+
+echo "✅ '$SOURCE_FOLDER' moved to '$destination'"xy
+
